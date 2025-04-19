@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <style>
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #0000ff;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        h1 {
+            text-align: center;
+            color: #0000ff;
+        }
+
+        body {
+            margin-top: 50px;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: red;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+    </style>
+
+<body>
+    <div class="container">
+        <h1>Your Bookings</h1>
+        {% if bookings %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Objects</th>
+                    <th>Photo</th>
+                    <th>Booking date</th>
+                    <th>Dates of stay</th>
+                    <th>Booking ID</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in bookings %}
+                    <tr>
+                        <td>{{ booking.object.name }}</td>
+                        <td>
+                            <img src="{{ booking.object.image }}" alt="Об'єкт" width="100">
+                        </td>
+                        <td>{{ booking.created_at }}</td>
+                        <td>{{ booking.date_from }} - {{ booking.date_to }}</td>
+                        <td>{{ booking.id }}</td>
+                        <td>
+                <a href="{% url 'booking_edit' booking.id %}" class="edit-btn">Edit</a>
+                <form action="{% url 'delete_booking' booking.id %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="delete-btn">✕</button>
+                </form>
+            </td>
+</tr>
+{% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>You have no bookings</p>
+        {% endif %}
+    </div>
+</body>
+
+{% endblock %}

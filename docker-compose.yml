@@ -1,0 +1,52 @@
+services:
+  django:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+      - db
+    env_file:
+      - .env
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - POSTGRES_DB=database
+      - POSTGRES_USER=database_admin
+      - POSTGRES_PASSWORD=vadimpapusha2310qq
+      - POSTGRES_HOST=db
+    volumes:
+      - .:/app
+
+  celery:
+    container_name: celery
+    build: .
+    command: celery -A Django worker --loglevel=info
+    depends_on:
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+    volumes:
+      - .:/app
+
+
+
+  redis:
+    container_name: redis
+    image: redis:7-alpine
+
+  db:
+    container_name: db
+    image: postgres:14-alpine
+    environment:
+      - POSTGRES_DB=database
+      - POSTGRES_USER=database_admin
+      - POSTGRES_PASSWORD=vadimpapusha2310qq
+      - POSTGRES_HOST=db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

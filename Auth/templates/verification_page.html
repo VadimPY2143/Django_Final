@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification</title>
+<style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        .verification-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .verification-container h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .verification-container p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .verification-container input {
+            font-size: 18px;
+            padding: 10px;
+            width: 60px;
+            text-align: center;
+            margin: 0 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .verification-container input:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        .verification-container button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .verification-container button:hover {
+            background-color: #0056b3;
+        }
+
+        .resend-link {
+            display: block;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .resend-link:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="verification-container">
+        <h1>Email Verification</h1>
+        <p>Please enter the 4-digit code sent to your email address.</p>
+
+        <form id="verification-form" action="{% url 'confirm_registration' %}" method="POST">
+            {% csrf_token %}
+            <input type="text" name="code" maxlength="4" required>
+            <button type="submit">Verify</button>
+        </form>
+        <div id="error-message"></div>
+
+        <form action="{% url 'resend_confirmation_mail' %}">
+    {% csrf_token %}
+    <button type="submit" class="resend-link">Resend Code</button>
+
+</form>
+    </div>
+
+
+</body>
+</html>

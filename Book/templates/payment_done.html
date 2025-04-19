@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Підтвердження оплати</title>
+    <style>
+
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    background: linear-gradient(135deg, #f4f7fa, #d7e1ec);
+    color: #2c3e50;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #0000ff;
+    color: #fff;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+.header .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+.navigation ul {
+    display: flex;
+    gap: 10px;
+}
+.navigation ul li {
+    display: flex;
+    align-items: center;
+}
+.navigation ul li a {
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+.navigation ul li a:hover {
+    transform: scale(1.1);
+    color: #e0e0e0;
+}
+.logo a {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+}
+.navigation ul li .button {
+    padding: 10px 20px;
+    background-color: #fff;
+    color: #0000ff;
+    border: 2px solid #0000ff;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+.navigation ul li .button:hover {
+    background-color: #0000ff;
+    color: #fff;
+    transform: scale(1.1);
+}
+.navigation ul li .button:active {
+    transform: scale(1);
+}
+.content-wrapper {
+    text-align: center;
+    background: white;
+    padding: 50px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    max-width: 600px;
+    width: 90%;
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+h2 {
+    font-size: 32px;
+    color: #2c3e50;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.success-message {
+    font-size: 24px;
+    color: #27ae60;
+    font-weight: 600;
+    margin-bottom: 40px;
+}
+
+p {
+    font-size: 18px;
+    color: #7f8c8d;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.email-message {
+    font-size: 20px;
+    color: #3498db;
+    font-weight: 500;
+}
+
+.icon {
+    font-size: 50px;
+    color: #27ae60;
+    margin-bottom: 15px;
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="content-wrapper">
+        <div class="icon">✔</div>
+        <h2>Підтвердження оплати</h2>
+        <p class="success-message">Ваша оплата була успішно оброблена!</p>
+        <p>Дякуємо за вашу покупку. Ваша транзакція була завершена без проблем.</p>
+        <p class="email-message">Також на вашу електронну пошту було надіслано лист з підтвердженням і деталями вашої покупки.</p>
+    </div>
+</div>
+
+</body>
+{% endblock content %}
+</html>

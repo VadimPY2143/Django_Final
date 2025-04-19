@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookingSite - Contacts</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 60px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .contact-item {
+            width: 45%;
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .contact-item h3 {
+            margin-top: 0;
+        }
+        @media (max-width: 768px) {
+            .contact-item {
+                width: 100%;
+            }
+        }
+
+
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Contacts BookingSite</h1>
+
+        <div class="contact-info">
+            <div class="contact-item">
+                <h3>Our Adress</h3>
+                <p>Teatralna 23 str.<br>
+                Lviv, Ukraine<br>
+                zip code: 70842</p>
+            </div>
+
+            <div class="contact-item">
+                <h3>Phone Number</h3>
+                <p>+38 (099) 222-99-22</p>
+            </div>
+
+            <div class="contact-item">
+                <h3>Email</h3>
+                <p><a href="mailto:info@bookingsite.com">info@bookingsite.com</a></p>
+            </div>
+
+            <div class="contact-item">
+                <h3>Social Media</h3>
+                <p><a href="#">Facebook</a><br>
+                <a href="#">Instagram</a></p>
+            </div>
+
+        </div>
+
+    </div>
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+<header class="header">
+    <div class="container">
+        <div class="logo">
+            <a href="/">BookingSite</a>
+        </div>
+        <nav class="navigation">
+            <ul>
+                <li><a href="/about/">About Us</a></li>
+                <li><a href="/contact/">Contacts</a></li>
+
+                {% if user.is_authenticated %}
+                <li>Hello,  <a href="/user_profile/">{{ user.username }}</a>! </li>
+                <li><a href="{% url 'booking_list' request.user.id %}" class="button">Your bookings</a></li>
+                    <li><a href="/logout/" class="button">Log Out</a></li>
+                {% else %}
+                    <li><a href="/login/" class="button">Log In</a></li>
+                    <li><a href="/register/" class="button">Register</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+        <form method="get" action="/search_objects/" class="search-form">
+            <input type="text" name="q" placeholder="Search hotels by name" required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+</header>
+
+<div class="content">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<footer>
+    <div class="footer-container">
+        <p>Phone Number: <a href="tel:+380992220142">+380 99 222 0142</a></p>
+        <p><a href="mailto:info@bookingstite.com">info@bookingsite.com</a></p>
+        <p>&copy; 2025 BookingSite. All rights reserved.</p>
+    </div>
+</footer>
+
+</body>
+</html>

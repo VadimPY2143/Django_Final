@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+.content-wrapper {
+    padding: 50px;
+    flex: 1;
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    display: flex; /* Робимо картку flex-контейнером */
+    flex-direction: column; /* Вирівнюємо елементи по вертикалі */
+}
+
+.card-content {
+    flex: 1; /* Займає весь доступний простір */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Розподіляє простір між елементами */
+}
+.card-content form {
+    margin-top: auto;
+    width: 100%;
+}
+.card-content form button {
+   width: 100%;
+}
+
+
+
+</style>
+
+
+
+<div class="content-wrapper">
+    <h1>Search Results</h1>
+
+    {% if objects == 'No objects found' %}
+        <p style="text-align: center;">No objects found for your search.</p>
+    {% else %}
+        <div class="card-container">
+            {% for obj in objects %}
+            <div class="card">
+                <img src="{{ obj.image }}" alt="Image of {{ obj.name }}">
+                <div class="card-content">
+                    <h3>{{ obj.name }}</h3>
+                    <p><strong>Type:</strong> {{ obj.get_settlement_type_display }}</p>
+                    <p>{{ obj.description|default:"No description." }}</p>
+                    <p class="price" style="color: #4CAF50">${{ obj.price }}</p>
+                    <form method="post" action="{% url 'book' obj.id %}">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit">Book</button>
+                    </form>
+                </div>
+             </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

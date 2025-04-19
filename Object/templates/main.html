@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="content">
+        <h1>Objects for booking</h1>
+        <div class="cards-wrapper">
+            {% for obj in object %}
+            <div class="card">
+                <img src="{{ obj.image }}" alt="Image of {{ obj.name }}">
+
+                <div class="card-content">
+                    <h3>{{ obj.name }}</h3>
+                    <p><strong>Type:</strong> {{ obj.get_settlement_type_display }}</p>
+                    <p>{{ obj.description|default:"No description." }}</p>
+
+                    <p class="price" style="color: #4CAF50">${{ obj.price }}</p>
+                    <form method="post" action="{% url 'book' obj.id %}">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit">Book</button>
+
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
+

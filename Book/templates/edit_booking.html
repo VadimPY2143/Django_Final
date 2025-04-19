@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'style.css' %}">
+
+<style>
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    padding: 20px;
+}
+
+.info-section {
+    border: 1px solid #ccc;
+    padding: 20px;
+    width: 45%;
+}
+
+.info-section img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.info-section p {
+    margin-bottom: 10px;
+}
+
+.price {
+    color: green;
+    font-weight: bold;
+}
+
+.form-section {
+    border: 1px solid #ccc;
+    padding: 20px;
+    width: 45%;
+}
+
+.form-section form ul {
+    list-style: none;
+    padding: 0;
+}
+
+.form-section button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.form-section button:hover {
+    background-color: #0056b3;
+}
+
+.form-section button:active {
+    background-color: #004080;
+    transform: translateY(2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+    .content {
+        flex-direction: column;
+    }
+    .info-section, .form-section {
+        width: 100%;
+    }
+}
+
+footer {
+    background-color: #0000ff;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+footer a {
+    color: #4CAF50;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #3e8e41;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll(".delete-btn").forEach(button => {
+        button.addEventListener("click", function(event) {
+            event.preventDefault();
+
+            let bookingId = this.dataset.bookingId;
+            let row = document.getElementById(`booking-${bookingId}`);
+            fetch(`/delete_booking/${bookingId}/`, {
+                method: "POST",
+                headers: { "X-CSRFToken": "{{ csrf_token }}" }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    row.remove();
+                }
+            });
+        });
+    });
+});
+</script>
+
+<body>
+<div class="content">
+    <div class="info-section">
+        <h3>{{ object.name }}</h3>
+        <img src="{{ object.image }}" alt="Image of {{ object.name }}" width="400" height="300">
+        <p><strong>Type:</strong> {{ object.get_settlement_type_display }}</p>
+        <p><strong>Description:</strong> {{ object.description|default:"No description available." }}</p>
+        <p class="price">${{ object.price }}</p>
+    </div>
+
+    <div class="form-section">
+        <h3>Edit Booking Form</h3>
+        <form method="post" action="{% url 'booking_edit' booking.id %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button type="submit">Book</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+</body>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #dfeaf1;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: #dcf1ff;
+            padding: 20px;
+            text-align: left;
+        }
+
+        .header h1 {
+            color: #000;
+            font-size: 42px;
+            margin: 0;
+        }
+
+        .content {
+            padding: 20px;
+            text-align: left;
+        }
+
+        .content p {
+            font-size: 16px;
+            color: #101112;
+            line-height: 1.5;
+        }
+
+        .content img {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 15px;
+            color: #1e0e4b;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>BookingSite</h1>
+        </div>
+        <div class="content">
+            <h1>Вітаємо, {{ booking.name }}!</h1>
+            <p>Ви успішно забронювали {{ objectt.name }}!</p>
+            <img src="{{ objectt.image }}"/>
+
+        </div>
+        <div class="footer">
+            <p>Дякуємо за використання нашого сервісу!</p>
+        </div>
+    </div>
+</body>
+
+</html>

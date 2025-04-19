@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+
+        .profile-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            width: 500px;
+            margin: 50px auto;
+        }
+        .profile-container img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+        .profile-container h2 {
+            margin: 15px 0;
+            font-size: 28px;
+            color: #333;
+        }
+        .profile-container p {
+            margin: 10px 0;
+            font-size: 18px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        {% if user.avatar %}
+        <img src="{{ user.avatar.url }}" alt="User Avatar">
+        {% else %}
+
+        {% endif %}
+        <h2>{{ user.username }}</h2>
+        <p><strong>Phone:</strong> {{ user.phone_number }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Bookings count:</strong> {{ bookings }}</p>
+    </div>
+
+{% endblock %}
+
+</body>
+</html>
