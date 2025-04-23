@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.views.decorators.cache import cache_page
+from django.views.decorators.cache import cache_page, never_cache
 from django.core.cache import cache
 from Book.models import Booking
 from Object.forms import CreateObjForm
@@ -19,7 +19,6 @@ def create_object(request):
 
 def main(request):
     objectt = CreateObject.objects.all()
-
     if not request.user.is_authenticated:
         responsee = cache_page(60 * 15)(render)(request, 'main.html', {'object': objectt})
 
@@ -44,6 +43,7 @@ def search_objects(request):
                                                    'query': query})
 
 
+@never_cache
 def user_profile(request):
     user = request.user
     bookings = len(Booking.objects.filter(user=user))

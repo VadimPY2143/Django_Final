@@ -125,3 +125,4 @@ def payment_canceled(request, booking_id):
     return render(request, 'payment_canceled.html', {"object": objectt})
 
 
+

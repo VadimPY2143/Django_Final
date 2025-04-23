@@ -11,70 +11,61 @@ from .tasks import send_mail_task
 
 def register(request):
     if request.method == 'POST':
-        form = forms.CustomUserCreationForm(request.POST)
-        users = CreateUser.objects.all()
-        if form.is_valid() and form.cleaned_data['email'] not in [user.email for user in users]:
-            rand_code = ''.join(str(randint(0, 9)) for _ in range(4))
+        form = forms.CustomUserCreationForm(request.POST, request.FILES)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.is_active = False
+            user.save()
 
+            rand_code = ''.join(str(randint(0, 9)) for _ in range(4))
             send_mail_task.delay(
                 'Code Confirmation',
                 f'Your code: {rand_code}',
                 'vadimpapusha2310@gmail.com',
-                [request.user.email],
+                [form.cleaned_data['email']],
             )
 
             request.session['random_code'] = rand_code
-            request.session['form_data'] = {
-                'username': form.cleaned_data['username'],
-                'email': form.cleaned_data['email'],
-                'phone_number': form.cleaned_data['phone_number'],
-                'password': form.cleaned_data['password'],
-                'confirm_password': form.cleaned_data['confirm_password'],
-            }
-            return render(request, 'verification_page.html', {'form_data': request.session['form_data']})
+            request.session['user_id'] = user.id
+
+            return render(request, 'verification_page.html')
 
     else:
         form = forms.CustomUserCreationForm()
+
     return render(request, 'register.html', {'form': form})
 
 
 def confirm_registration(request):
     if request.method == 'POST':
-        form_data = request.session.get('form_data', {})
-        user_code = request.POST.get('code').strip()
+        user_code = request.POST.get('code', '').strip()
         random_code = request.session.get('random_code')
+        user_id = request.session.get('user_id')
 
-        if form_data and str(random_code) == user_code:
-            query_dict = QueryDict('', mutable=True)
-            query_dict.update({
-                'username': form_data.get('username'),
-                'email': form_data.get('email'),
-                'phone_number': form_data.get('phone_number'),
-                'password': form_data.get('password'),
-                'confirm_password': form_data.get('confirm_password'),
-            })
-            form = forms.CustomUserCreationForm(query_dict)
+        if user_code == str(random_code):
+            user = CreateUser.objects.get(id=user_id)
+            user.is_active = True
+            user.save()
 
-            if form.is_valid():
-                user = form.save()
-                login(request, user)
-                return redirect('main')
+            del request.session['random_code']
+            del request.session['user_id']
 
-            else:
-                print('Form validation failed:', form.errors)
-        else:
-            print('wrong user code')
+            login(request, user)
+            return redirect('main')
+
+        return render(request, 'verification_page.html')
 
     return render(request, 'verification_page.html')
 
 
 def resend_confirmation_mail(request):
     random_code = request.session.get('random_code')
+    form = request.session.get('form_data')
     send_mail_task.delay(
         'Code Confirmation',
         f'Your code: {random_code}',
         'vadimpapusha2310@gmail.com',
-        [request.user.email],
+        [form['email']],
         )
     return render(request, 'verification_page.html')
 

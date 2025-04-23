@@ -13,6 +13,19 @@ class CustomUserCreationForm(forms.ModelForm):
         model = CreateUser
         fields = ['username', 'email', 'phone_number', 'avatar']
 
+    def clean(self):
+        cleaned = super().clean()
+        if cleaned.get('password') != cleaned.get('confirm_password'):
+            self.add_error('confirm_password', "Passwords must match")
+        return cleaned
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data['password'])
+        if commit:
+            user.save()
+        return user
+
 
 class CustomAuthenticationForm(AuthenticationForm):
     captcha = CaptchaField()
