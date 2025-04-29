@@ -60,12 +60,13 @@ def confirm_registration(request):
 
 def resend_confirmation_mail(request):
     random_code = request.session.get('random_code')
-    form = request.session.get('form_data')
+    user_id = request.session.get('user_id')
+    user = CreateUser.objects.get(id=user_id)
     send_mail_task.delay(
         'Code Confirmation',
         f'Your code: {random_code}',
         'vadimpapusha2310@gmail.com',
-        [form['email']],
+        [user.email],
         )
     return render(request, 'verification_page.html')
 
